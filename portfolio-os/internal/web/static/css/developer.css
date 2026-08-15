@@ -1,0 +1,546 @@
+#developer-view {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: #000c18;
+    color: #d7deea;
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        Consolas,
+        monospace;
+}
+
+.dev-window {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #000c18;
+}
+
+.dev-titlebar {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    background: #010b16;
+    border-bottom: 1px solid #17243a;
+}
+
+.traffic-lights {
+    display: flex;
+    gap: 8px;
+}
+
+.traffic-light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.traffic-light.red {
+    background: #ff5f57;
+}
+
+.traffic-light.yellow {
+    background: #febc2e;
+}
+
+.traffic-light.green {
+    background: #28c840;
+}
+
+.dev-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #6a7280;
+    font-size: 13px;
+}
+
+.dev-view-selector {
+    margin-left: auto;
+    padding: 6px 12px;
+    border: 1px solid #243653;
+    border-radius: 6px;
+    background: #0b1c33;
+    color: #6688cc;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.dev-view-selector:hover {
+    background: #122747;
+    color: #ffffff;
+}
+
+.dev-workspace {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+}
+
+.dev-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: #010b16;
+    border-right: 1px solid #17243a;
+    overflow-y: auto;
+}
+
+.explorer-title {
+    padding: 14px 16px 8px;
+    color: #8b96aa;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+}
+
+.explorer-section {
+    padding: 8px 16px;
+    color: #6688cc;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.file-tree {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border: 0;
+    border-left: 2px solid transparent;
+    background: transparent;
+    color: #aeb8c8;
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.file-item:hover {
+    background: #081729;
+}
+
+.file-item.active {
+    background: #0b1c33;
+    border-left-color: #6688cc;
+    color: #ffffff;
+}
+
+.file-icon {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.go-icon {
+    color: #6688cc;
+}
+
+.dev-editor {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #0f111a;
+}
+
+.editor-tabs {
+    display: flex;
+    height: 38px;
+    overflow-x: auto;
+    background: #010b16;
+    border-bottom: 1px solid #17243a;
+}
+
+.editor-tab {
+    flex-shrink: 0;
+    padding: 0 16px;
+    border: 0;
+    border-right: 1px solid #17243a;
+    background: #010b16;
+    color: #6a7280;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+
+.code-editor {
+    display: flex;
+    min-height: 100%;
+}
+
+.line-numbers {
+    width: 50px;
+    flex-shrink: 0;
+    padding-top: 24px;
+    padding-right: 14px;
+    text-align: right;
+    user-select: none;
+    color: #384887;
+    font-size: 13px;
+    line-height: 1.8;
+    background: #010b16;
+    border-right: 1px solid #17243a;
+}
+
+.code-editor {
+    display: flex;
+    min-height: 100%;
+}
+
+.code-editor pre {
+    flex: 1;
+    margin: 0;
+    padding: 24px 30px;
+    overflow-x: auto;
+}
+
+.editor-tab {
+    position: relative;
+    height: 36px;
+    padding: 0 16px;
+    border: none;
+    border-right: 1px solid #17243a;
+    background: #080d17;
+    color: #6f7b91;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.editor-tab:hover {
+    background: #0d1522;
+    color: #c8d1e0;
+}
+
+.editor-tab.active {
+    background: #0f111a;
+    color: #ffffff;
+}
+
+
+
+.file-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #6688cc;
+}
+
+.editor-tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: #6688cc;
+}
+
+.line-numbers span {
+    display: block;
+}
+
+.line-numbers span {
+    display: block;
+}
+
+.code-editor pre {
+    flex: 1;
+    margin: 0;
+    padding: 24px 30px;
+    overflow-x: auto;
+}
+
+.dev-statusbar {
+    height: 22px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    background: #0b1c33;
+    color: #aeb8c8;
+    font-size: 11px;
+}
+
+.status-right {
+    display: flex;
+    gap: 16px;
+}
+.comment {
+    color: #6a7280;
+    font-style: italic;
+}
+
+.keyword {
+    color: #6688cc;
+}
+
+.string {
+    color: #c5a572;
+}
+
+.number {
+    color: #88aacc;
+}
+
+.editor-tab:hover {
+    color: #c7d0df;
+}
+
+.editor-tab.active {
+    background: #0f111a;
+    color: #ffffff;
+    border-top: 1px solid #6688cc;
+}
+
+.editor-content {
+    flex: 1;
+    overflow: auto;
+}
+
+.code-panel {
+    display: none;
+    min-height: 100%;
+}
+
+.code-panel.active {
+    display: block;
+}
+
+.code-panel pre {
+    margin: 0;
+    padding: 24px 30px;
+    color: #c7d0df;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+.comment {
+    color: #6a7280;
+}
+
+.keyword {
+    color: #6688cc;
+}
+
+.string {
+    color: #c5a572;
+}
+
+.number {
+    color: #88aacc;
+}
+
+
+
+/* =========================================
+   EXPLORER
+   ========================================= */
+
+.dev-sidebar {
+    background: #010b16;
+    color: #8d99ad;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.explorer-title {
+    padding: 12px 16px 8px;
+    color: #c5cbd5;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.explorer-section {
+    padding: 4px 10px;
+    color: #aeb8c8;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   TREE
+   ========================================= */
+
+.file-tree {
+    width: 100%;
+}
+
+.tree-folder {
+    position: relative;
+}
+
+.tree-folder-name {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 8px;
+
+    color: #b7c0ce;
+    font-size: 13px;
+    font-weight: 500;
+
+    user-select: none;
+}
+
+.tree-chevron {
+    width: 12px;
+    color: #8d99ad;
+    font-size: 12px;
+}
+
+.folder-icon {
+    color: #6688cc;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   INDENTATION GUIDES
+   ========================================= */
+
+.tree-children {
+    position: relative;
+    margin-left: 18px;
+    padding-left: 12px;
+}
+
+/*
+ * Main vertical indentation guide
+ */
+.tree-children::before {
+    content: "";
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 1px;
+
+    background: rgba(102, 136, 204, 0.14);
+}
+
+
+/*
+ * Small horizontal connector
+ * for every file
+ */
+.file-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: -12px;
+    top: 50%;
+
+    width: 12px;
+    height: 1px;
+
+    background: rgba(102, 136, 204, 0.14);
+}
+
+
+/* =========================================
+   FILE ITEMS
+   ========================================= */
+
+.file-item {
+    position: relative;
+
+    width: 100%;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0 8px;
+
+    border: none;
+    background: transparent;
+
+    color: #8d99ad;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+
+.file-item:hover {
+    background: #0b1626;
+    color: #d7deeb;
+}
+
+
+.file-item.active {
+    background: #0b1c33;
+    color: #ffffff;
+}
+
+
+/*
+ * Active-file blue indicator
+ */
+.file-item.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: -13px;
+    top: 0;
+    bottom: 0;
+
+    width: 2px;
+
+    background: #6688cc;
+}
+
+
+
+/* =========================================
+   GO FILE ICON
+   ========================================= */
+
+.file-icon {
+    width: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+
+.go-icon {
+    color: #6688cc;
+}

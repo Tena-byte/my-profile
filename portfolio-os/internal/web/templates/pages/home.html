@@ -1,0 +1,16 @@
+{{ define "content" }}
+<link rel="stylesheet" href="/static/css/client.css">
+<link rel="stylesheet" href="/static/css/developer.css">
+<div class="view-controls">
+    <button type="button" id="view-toggle">
+        <span id="view-label">Client View</span>
+    </button>
+</div>
+
+{{ template "client-view" . }}
+
+{{ template "developer-view" . }}
+
+<script src="/static/js/view-toggle.js"></script>
+
+{{ end }}

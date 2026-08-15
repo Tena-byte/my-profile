@@ -1,0 +1,297 @@
+{{ define "developer-view" }}
+
+<section id="developer-view" hidden>
+  <div class="dev-window">
+    <!-- Title Bar -->
+    <header class="dev-titlebar">
+      <div class="traffic-lights">
+        <span class="traffic-light red"></span>
+        <span class="traffic-light yellow"></span>
+        <span class="traffic-light green"></span>
+      </div>
+
+      <div class="dev-title">portfolio-os</div>
+
+      <button type="button" class="dev-view-selector" id="dev-view-toggle">
+        Client View
+      </button>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="dev-workspace">
+      <!-- Explorer -->
+      <!-- Explorer -->
+      <aside class="dev-sidebar">
+        <div class="explorer-title">EXPLORER</div>
+
+        <div class="explorer-section">PORTFOLIO-OS</div>
+
+        <nav class="file-tree">
+          <!-- Portfolio folder -->
+          <div class="tree-folder open">
+            <div class="tree-folder-name">
+              <span class="tree-chevron">⌄</span>
+              <span class="folder-icon">▾</span>
+              portfolio
+            </div>
+
+            <div class="tree-children">
+              <!-- Home -->
+              <button class="file-item active" data-tab="home">
+                <span class="file-icon go-icon">Go</span>
+                <span>Home.go</span>
+              </button>
+
+              <!-- About -->
+              <button class="file-item" data-tab="about">
+                <span class="file-icon go-icon">Go</span>
+                <span>AboutMe.go</span>
+              </button>
+
+              <!-- Skills -->
+              <button class="file-item" data-tab="skills">
+                <span class="file-icon go-icon">Go</span>
+                <span>Skills.go</span>
+              </button>
+
+              <!-- Services -->
+              <button class="file-item" data-tab="services">
+                <span class="file-icon go-icon">Go</span>
+                <span>Services.go</span>
+              </button>
+
+              <!-- Education -->
+              <button class="file-item" data-tab="education">
+                <span class="file-icon go-icon">Go</span>
+                <span>Education.go</span>
+              </button>
+
+              <!-- Certificates -->
+              <button class="file-item" data-tab="certificates">
+                <span class="file-icon go-icon">Go</span>
+                <span>Certificates.go</span>
+              </button>
+
+              <!-- Projects -->
+              <button class="file-item" data-tab="projects">
+                <span class="file-icon go-icon">Go</span>
+                <span>Projects.go</span>
+              </button>
+
+              <!-- Gallery -->
+              <button class="file-item" data-tab="gallery">
+                <span class="file-icon go-icon">Go</span>
+                <span>Gallery.go</span>
+              </button>
+
+              <!-- Contact -->
+              <button class="file-item" data-tab="contact">
+                <span class="file-icon go-icon">Go</span>
+                <span>Contact.go</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Editor -->
+      <main class="dev-editor">
+        <!-- Tabs -->
+        <div class="editor-tabs">
+          <button class="editor-tab active" data-tab="home">Home.go</button>
+
+          <button class="editor-tab" data-tab="about">AboutMe.go</button>
+
+          <button class="editor-tab" data-tab="skills">Skills.go</button>
+
+          <button class="editor-tab" data-tab="services">Services.go</button>
+
+          <button class="editor-tab" data-tab="education">Education.go</button>
+
+          <button class="editor-tab" data-tab="certificates">
+            Certificates.go
+          </button>
+
+          <button class="editor-tab" data-tab="projects">Projects.go</button>
+
+          <button class="editor-tab" data-tab="gallery">Gallery.go</button>
+
+          <button class="editor-tab" data-tab="contact">Contact.go</button>
+        </div>
+
+        <!-- Editor Content -->
+        <div class="editor-content">
+          <!-- Home -->
+          <div class="code-panel active" data-panel="home">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Welcome to my portfolio</span>
+
+<span class="keyword">const</span> developer = {
+    name: <span class="string">"{{ .Portfolio.Profile.Name }}"</span>,
+    title: <span class="string">"{{ .Portfolio.Profile.Title }}"</span>,
+    location: <span class="string">"{{ .Portfolio.Profile.Location }}"</span>
+};</code></pre>
+            </div>
+          </div>
+
+          <!-- About -->
+          <div class="code-panel" data-panel="about">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// About me</span>
+
+<span class="keyword">const</span> about = {
+    bio: <span class="string">"{{ .Portfolio.Profile.Bio }}"</span>
+};</code></pre>
+            </div>
+          </div>
+
+          <!-- Skills -->
+          <div class="code-panel" data-panel="skills">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Technologies I work with</span>
+
+<span class="keyword">const</span> skills = [
+
+{{ range .Portfolio.Skills }}
+    {
+        name: <span class="string">"{{ .Name }}"</span>,
+        proficiency: <span class="number">{{ .Proficiency }}</span>
+    },
+{{ end }}
+
+];</code></pre>
+            </div>
+          </div>
+
+          <!-- Services -->
+          <div class="code-panel" data-panel="services">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Services</span>
+
+<span class="keyword">const</span> services = [
+
+{{ range .Portfolio.Services }}
+    {
+        title: <span class="string">"{{ .Title }}"</span>,
+        description: <span class="string">"{{ .Description }}"</span>
+    },
+{{ end }}
+
+];</code></pre>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="code-panel" data-panel="education">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Education</span>
+
+<span class="keyword">const</span> education = [
+
+{{ range .Portfolio.Education }}
+    {
+        institution: <span class="string">"{{ .Institution }}"</span>,
+        degree: <span class="string">"{{ .Degree }}"</span>,
+        field: <span class="string">"{{ .Field }}"</span>
+    },
+{{ end }}
+
+];</code></pre>
+            </div>
+          </div>
+
+          <!-- Certificates -->
+          <div class="code-panel" data-panel="certificates">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Professional certifications</span>
+
+<span class="keyword">const</span> certificates = [
+
+{{ range .Portfolio.Certificates }}
+    {
+        title: <span class="string">"{{ .Title }}"</span>,
+        issuer: <span class="string">"{{ .Issuer }}"</span>,
+        issueDate: <span class="string">"{{ .IssueDate }}"</span>,
+        credentialID: <span class="string">"{{ .CredentialID }}"</span>
+    },
+{{ end }}
+
+];</code></pre>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="code-panel" data-panel="projects">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Projects</span>
+
+<span class="keyword">const</span> projects = [
+
+{{ range .Portfolio.Projects }}
+    {
+        name: <span class="string">"{{ .Name }}"</span>,
+        description: <span class="string">"{{ .Description }}"</span>
+    },
+{{ end }}
+
+];</code></pre>
+            </div>
+          </div>
+
+          <!-- Gallery -->
+          <div class="code-panel" data-panel="gallery">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Gallery</span>
+
+// Coming soon.</code></pre>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="code-panel" data-panel="contact">
+            <div class="code-editor">
+              <div class="line-numbers"></div>
+
+              <pre><code><span class="comment">// Contact information</span>
+
+<span class="keyword">const</span> contact = {
+    email: <span class="string">"{{ .Portfolio.Contact.Email }}"</span>,
+    location: <span class="string">"{{ .Portfolio.Contact.Location }}"</span>
+};</code></pre>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Status Bar -->
+    <footer class="dev-statusbar">
+      <div class="status-file">Home.go</div>
+
+      <div class="status-right">
+        <span>Ln 1, Col 1</span>
+        <span>UTF-8</span>
+        <span>LF</span>
+        <span>Go</span>
+      </div>
+    </footer>
+  </div>
+</section>
+
+{{ end }}

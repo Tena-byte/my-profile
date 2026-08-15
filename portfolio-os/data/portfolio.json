@@ -1,0 +1,53 @@
+{
+  "profile": {
+    "name": "Your Name",
+    "title": "Software Engineer",
+    "bio": "I build reliable software and modern web applications.",
+    "location": "Nigeria",
+    "profile_image": "",
+    "availability": "Available for opportunities"
+  },
+
+  "statistics": [
+    {
+      "label": "Projects",
+      "value": "10+"
+    },
+    {
+      "label": "Technologies",
+      "value": "15+"
+    },
+    {
+      "label": "Experience",
+      "value": "3+"
+    }
+  ],
+
+  "skills": [],
+
+  "services": [],
+
+  "education": [],
+
+  "certificates": [
+    {
+      "title": "Example Certificate",
+      "issuer": "Example Organization",
+      "issue_date": "2026-01-01",
+      "credential_id": "CERT-001",
+      "description": "Example certificate description.",
+      "image": "/static/images/certificates/example.jpg",
+      "verification_url": ""
+    }
+  ],
+
+  "projects": [],
+
+  "contact": {
+    "email": "you@example.com",
+    "phone": "",
+    "location": "Nigeria"
+  },
+
+  "social_links": []
+}

@@ -1,0 +1,131 @@
+{{ define "client-view" }}
+
+<section id="client-view" class="client-site">
+
+    <!-- Navigation -->
+    <nav class="client-nav">
+        ...
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        ...
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats">
+        ...
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section about">
+        ...
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section">
+        ...
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section skills">
+        ...
+    </section>
+
+    <!-- Education -->
+    <section id="education" class="section">
+        ...
+    </section>
+
+    <!-- Certificates -->
+    <section id="certificates" class="section">
+    <div class="container">
+
+        <div class="section-header">
+            <span class="section-label">Certifications</span>
+
+            <h2>
+                Professional certifications
+            </h2>
+        </div>
+
+        <div class="projects-grid">
+
+            {{ range .Portfolio.Certificates }}
+
+            <article class="card certificate-card">
+
+                {{ if .Image }}
+                <div class="certificate-image">
+                    <img
+                        src="{{ .Image }}"
+                        alt="{{ .Title }} certificate"
+                        loading="lazy"
+                    >
+                </div>
+                {{ end }}
+
+                <div class="certificate-content">
+
+                    <h3>
+                        {{ .Title }}
+                    </h3>
+
+                    <p class="certificate-issuer">
+                        {{ .Issuer }}
+                    </p>
+
+                    <p>
+                        {{ .Description }}
+                    </p>
+
+                    <p class="certificate-date">
+                        Issued: {{ .IssueDate }}
+                    </p>
+
+                    {{ if .CredentialID }}
+                    <p class="certificate-id">
+                        Credential ID: {{ .CredentialID }}
+                    </p>
+                    {{ end }}
+
+                    {{ if .VerificationURL }}
+                    <a
+                        href="{{ .VerificationURL }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="button button-secondary"
+                    >
+                        Verify Certificate
+                    </a>
+                    {{ end }}
+
+                </div>
+
+            </article>
+
+            {{ end }}
+
+        </div>
+
+    </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section">
+        ...
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section contact">
+        ...
+    </section>
+
+    <!-- Footer -->
+    <footer class="client-footer">
+        ...
+    </footer>
+
+</section>
+
+{{ end }}

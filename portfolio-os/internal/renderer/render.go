@@ -2,6 +2,7 @@ package renderer
 
 import (
 	"html/template"
+	"io/fs"
 	"net/http"
 )
 
@@ -9,13 +10,13 @@ type Renderer struct {
 	templates *template.Template
 }
 
-func New() (*Renderer, error) {
-	templates, err := template.ParseGlob("templates/layouts/*.html")
-	if err != nil {
-		return nil, err
-	}
-
-	templates, err = templates.ParseGlob("templates/pages/*.html")
+func New(files fs.FS) (*Renderer, error) {
+	templates, err := template.ParseFS(
+		files,
+		"templates/layouts/*.html",
+		"templates/pages/*.html",
+		"templates/partials/*.html",
+	)
 	if err != nil {
 		return nil, err
 	}
