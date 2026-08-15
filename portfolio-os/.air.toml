@@ -1,0 +1,17 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -o ./tmp/main ./cmd/web"
+  bin = "./tmp/main"
+  delay = 1000
+  include_ext = ["go", "html", "css", "js"]
+  exclude_dir = ["tmp", "static/node_modules"]
+  include_dir = ["cmd", "internal", "templates", "static"]
+  exclude_regex = ["_test.go"]
+
+[log]
+  time = true
+
+[misc]
+  clean_on_exit = true
