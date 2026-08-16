@@ -4,6 +4,16 @@
   <div class="dev-window">
     <!-- Title Bar -->
     <header class="dev-titlebar">
+      <button
+        type="button"
+        class="mobile-explorer-toggle"
+        id="mobile-explorer-toggle"
+        aria-label="Open file explorer"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
       <div class="traffic-lights">
         <span class="traffic-light red"></span>
         <span class="traffic-light yellow"></span>
@@ -12,7 +22,13 @@
 
       <div class="dev-title">portfolio-os</div>
 
-      <button type="button" class="dev-view-selector" id="dev-view-toggle">
+      <button
+        type="button"
+        class="dev-view-selector"
+        id="dev-view-toggle"
+        aria-label="Switch between Developer View and Client View"
+        aria-pressed="true"
+      >
         Client View
       </button>
     </header>

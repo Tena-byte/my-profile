@@ -31,10 +31,17 @@ func main() {
 		log.Fatal(err)
 	}
 
+	analyticsService := services.NewAnalyticsService()
+
+	analyticsHandler := handlers.NewAnalyticsHandler(
+		analyticsService,
+	)
+
 	homeHandler := handlers.NewHomeHandler(
 		renderer,
 		portfolioService.GetPortfolio(),
 	)
+
 	mux := http.NewServeMux()
 
 	mux.Handle(
@@ -50,9 +57,43 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 
 		if err := json.NewEncoder(w).Encode(portfolio); err != nil {
-			http.Error(w, "Failed to encode portfolio", http.StatusInternalServerError)
+			http.Error(
+				w,
+				"Failed to encode portfolio",
+				http.StatusInternalServerError,
+			)
 		}
 	})
+
+	mux.HandleFunc(
+		"POST /api/visits",
+		analyticsHandler.StartVisit,
+	)
+
+	mux.HandleFunc(
+		"PATCH /api/visits/{id}",
+		analyticsHandler.UpdateDuration,
+	)
+
+	mux.HandleFunc(
+		"GET /api/admin/analytics",
+		analyticsHandler.GetStats,
+	)
+
+	mux.HandleFunc(
+		"GET /admin",
+		func(w http.ResponseWriter, r *http.Request) {
+			err := renderer.Render(w, "admin", nil)
+
+			if err != nil {
+				http.Error(
+					w,
+					"Failed to render admin page",
+					http.StatusInternalServerError,
+				)
+			}
+		},
+	)
 
 	server := &http.Server{
 		Addr:    ":3000",

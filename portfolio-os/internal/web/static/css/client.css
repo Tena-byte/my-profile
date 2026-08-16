@@ -1,0 +1,197 @@
+#client-view {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+#client-view[hidden] {
+    display: none;
+}
+
+
+
+/* =========================================
+   RESPONSIVE CLIENT VIEW
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    #client-view {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* -----------------------------------------
+       View controls
+       ----------------------------------------- */
+
+    .view-controls {
+        top: 12px;
+        right: 12px;
+    }
+
+    #view-toggle {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+
+    /* -----------------------------------------
+       Hero
+       ----------------------------------------- */
+
+    .hero {
+        min-height: auto;
+
+        padding: 90px 20px 60px;
+
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 9vw, 3rem);
+        line-height: 1.1;
+    }
+
+    .hero h2 {
+        font-size: 1.1rem;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+
+    /* -----------------------------------------
+       General sections
+       ----------------------------------------- */
+
+    .section {
+        padding: 60px 20px;
+    }
+
+    .section h2 {
+        font-size: 1.8rem;
+    }
+
+
+    /* -----------------------------------------
+       Stats
+       ----------------------------------------- */
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .stat {
+        padding: 18px 12px;
+    }
+
+
+    /* -----------------------------------------
+       Cards / grids
+       ----------------------------------------- */
+
+    .services-grid,
+    .skills-grid,
+    .projects-grid,
+    .education-grid,
+    .certificates-grid,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+
+    /* -----------------------------------------
+       Cards
+       ----------------------------------------- */
+
+    .service-card,
+    .project-card,
+    .education-card,
+    .certificate-card {
+        padding: 20px;
+    }
+
+
+    /* -----------------------------------------
+       Skills
+       ----------------------------------------- */
+
+    .skill-item {
+        width: 100%;
+    }
+
+
+    /* -----------------------------------------
+       Images
+       ----------------------------------------- */
+
+    .project-card img,
+    .certificate-card img,
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+
+    /* -----------------------------------------
+       Contact
+       ----------------------------------------- */
+
+    .contact-form {
+        width: 100%;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    /* -----------------------------------------
+       Footer
+       ----------------------------------------- */
+
+    .footer {
+        padding: 30px 20px;
+
+        text-align: center;
+    }
+
+}
+
+
+
+
+@media (max-width: 480px) {
+
+    .hero {
+        padding: 80px 16px 50px;
+    }
+
+    .section {
+        padding: 50px 16px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 2.1rem;
+    }
+
+    .hero h2 {
+        font-size: 1rem;
+    }
+
+    .section h2 {
+        font-size: 1.6rem;
+    }
+
+}

@@ -17,25 +17,44 @@ document.addEventListener("DOMContentLoaded", () => {
      */
 
     function setView(view) {
-        const isDeveloper = view === "developer";
+    const isDeveloper = view === "developer";
 
-        clientView.hidden = isDeveloper;
-        developerView.hidden = !isDeveloper;
+    const activeView = isDeveloper
+        ? developerView
+        : clientView;
 
-        if (viewLabel) {
-            viewLabel.textContent = isDeveloper
-                ? "Developer View"
-                : "Client View";
-        }
+    const inactiveView = isDeveloper
+        ? clientView
+        : developerView;
 
-        if (devViewToggle) {
-            devViewToggle.textContent = isDeveloper
-                ? "Client View"
-                : "Developer View";
-        }
+    inactiveView.classList.remove("view-visible");
+    inactiveView.classList.add("view-hidden");
 
-        localStorage.setItem("portfolio-view", view);
+    setTimeout(() => {
+        inactiveView.hidden = true;
+
+        activeView.hidden = false;
+
+        requestAnimationFrame(() => {
+            activeView.classList.remove("view-hidden");
+            activeView.classList.add("view-visible");
+        });
+    }, 150);
+
+    if (viewLabel) {
+        viewLabel.textContent = isDeveloper
+            ? "Developer View"
+            : "Client View";
     }
+
+    if (devViewToggle) {
+        devViewToggle.textContent = isDeveloper
+            ? "Client View"
+            : "Developer View";
+    }
+
+    localStorage.setItem("portfolio-view", view);
+}
 
 
     /*
@@ -254,4 +273,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     updateLineNumbers();
+
+
+
+
+
+    /*
+ * --------------------------------------------------
+ * MOBILE EXPLORER
+ * --------------------------------------------------
+ */
+
+const mobileExplorerToggle =
+    document.getElementById("mobile-explorer-toggle");
+
+const devSidebar =
+    document.querySelector(".dev-sidebar");
+
+if (mobileExplorerToggle && devSidebar) {
+
+    mobileExplorerToggle.addEventListener("click", () => {
+
+        const isOpen =
+            devSidebar.classList.toggle("mobile-open");
+
+        mobileExplorerToggle.setAttribute(
+            "aria-expanded",
+            isOpen
+        );
+    });
+
+
+    fileItems.forEach((file) => {
+
+        file.addEventListener("click", () => {
+
+            if (window.innerWidth <= 768) {
+                devSidebar.classList.remove("mobile-open");
+
+                mobileExplorerToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+            }
+
+          });
+
+        });
+
+    }
+    
 });

@@ -1,0 +1,87 @@
+{{ define "admin" }}
+
+<section class="admin-page">
+    <header class="admin-header">
+        <div>
+            <p class="admin-eyebrow">ADMIN</p>
+            <h1>Analytics</h1>
+            <p>Portfolio traffic and visitor activity.</p>
+        </div>
+    </header>
+
+    <section class="analytics-stats">
+
+        <article class="stat-card">
+            <span>Total Visits</span>
+            <strong id="total-visits">0</strong>
+        </article>
+
+        <article class="stat-card">
+            <span>Unique Visitors</span>
+            <strong id="unique-visitors">0</strong>
+        </article>
+
+        <article class="stat-card">
+            <span>Average Duration</span>
+            <strong id="average-duration">0 sec</strong>
+        </article>
+
+    </section>
+
+    <section class="analytics-grid">
+
+        <article class="analytics-card">
+            <header>
+                <h2>Devices</h2>
+            </header>
+
+            <div id="device-breakdown">
+                <p>No data yet.</p>
+            </div>
+        </article>
+
+        <article class="analytics-card">
+            <header>
+                <h2>Pages</h2>
+            </header>
+
+            <div id="page-views">
+                <p>No data yet.</p>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="analytics-card recent-visits">
+
+        <header>
+            <h2>Recent Visits</h2>
+        </header>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Page</th>
+                        <th>Device</th>
+                        <th>IP</th>
+                        <th>Duration</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+
+                <tbody id="recent-visits">
+                    <tr>
+                        <td colspan="5">No visits yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+</section>
+
+<script src="/static/js/admin-analytics.js"></script>
+
+{{ end }}
