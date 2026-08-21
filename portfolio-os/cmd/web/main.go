@@ -7,12 +7,19 @@ import (
 	"net/http"
 
 	"portfolio-os/internal/handlers"
+	"portfolio-os/internal/middleware"
 	"portfolio-os/internal/renderer"
 	"portfolio-os/internal/services"
 	"portfolio-os/internal/web"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("failed to load .env")
+	}
 
 	staticFS, err := fs.Sub(web.Files, "static")
 	if err != nil {
@@ -20,6 +27,7 @@ func main() {
 	}
 
 	staticHandler := http.FileServer(http.FS(staticFS))
+	uploadsHandler := http.FileServer(http.Dir("uploads"))
 
 	renderer, err := renderer.New(web.Files)
 	if err != nil {
@@ -37,6 +45,11 @@ func main() {
 		analyticsService,
 	)
 
+	adminHandler := handlers.NewAdminHandler(
+		renderer,
+		portfolioService,
+	)
+
 	homeHandler := handlers.NewHomeHandler(
 		renderer,
 		portfolioService.GetPortfolio(),
@@ -47,6 +60,11 @@ func main() {
 	mux.Handle(
 		"GET /static/",
 		http.StripPrefix("/static/", staticHandler),
+	)
+
+	mux.Handle(
+		"GET /uploads/",
+		http.StripPrefix("/uploads/", uploadsHandler),
 	)
 
 	mux.HandleFunc("GET /", homeHandler.Handle)
@@ -66,6 +84,21 @@ func main() {
 	})
 
 	mux.HandleFunc(
+		"GET /admin/login",
+		adminHandler.Login,
+	)
+
+	mux.HandleFunc(
+		"POST /admin/login",
+		adminHandler.Login,
+	)
+
+	mux.HandleFunc(
+		"GET /admin/logout",
+		adminHandler.Logout,
+	)
+
+	mux.HandleFunc(
 		"POST /api/visits",
 		analyticsHandler.StartVisit,
 	)
@@ -75,32 +108,181 @@ func main() {
 		analyticsHandler.UpdateDuration,
 	)
 
-	mux.HandleFunc(
+	mux.Handle(
 		"GET /api/admin/analytics",
-		analyticsHandler.GetStats,
+		middleware.AdminAuth(
+			http.HandlerFunc(analyticsHandler.GetStats),
+		),
 	)
 
-	mux.HandleFunc(
+	mux.Handle(
 		"GET /admin",
-		func(w http.ResponseWriter, r *http.Request) {
-			err := renderer.Render(w, "admin", nil)
+		middleware.AdminAuth(
+			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-			if err != nil {
-				http.Error(
+				if err := renderer.Render(
 					w,
-					"Failed to render admin page",
-					http.StatusInternalServerError,
-				)
-			}
-		},
+					"admin",
+					portfolioService.GetPortfolio(),
+				); err != nil {
+					http.Error(
+						w,
+						"Failed to render admin page",
+						http.StatusInternalServerError,
+					)
+				}
+			}),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/profile",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateProfile),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/certificates",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.AddCertificate),
+		),
+	)
+	mux.Handle(
+		"POST /admin/certificates/{index}",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateCertificate),
+		),
+	)
+	mux.Handle(
+		"POST /admin/certificates/{index}/delete",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.DeleteCertificate),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/skills",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.AddSkill),
+		),
+	)
+	mux.Handle(
+		"POST /admin/skills/{index}",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateSkill),
+		),
+	)
+	mux.Handle(
+		"POST /admin/skills/{index}/delete",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.DeleteSkill),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/services",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.AddService),
+		),
+	)
+	mux.Handle(
+		"POST /admin/services/{index}/delete",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.DeleteService),
+		),
+	)
+	mux.Handle(
+		"POST /admin/services/{index}",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateService),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/education",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.AddEducation),
+		),
+	)
+	mux.Handle(
+		"POST /admin/education/{index}/delete",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.DeleteEducation),
+		),
+	)
+	mux.Handle(
+		"POST /admin/education/{index}",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateEducation),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/projects",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.AddProject),
+		),
+	)
+	mux.Handle(
+		"POST /admin/projects/{index}/delete",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.DeleteProject),
+		),
+	)
+	mux.Handle(
+		"POST /admin/projects/{index}",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateProject),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/contact",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateContact),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/social-links",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.AddSocialLink),
+		),
+	)
+	mux.Handle(
+		"POST /admin/social-links/{index}/delete",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.DeleteSocialLink),
+		),
+	)
+	mux.Handle(
+		"POST /admin/social-links/{index}",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UpdateSocialLink),
+		),
+	)
+
+	mux.Handle(
+		"POST /admin/resume",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.UploadResume),
+		),
+	)
+	mux.Handle(
+		"GET /admin/resume/download",
+		middleware.AdminAuth(
+			http.HandlerFunc(adminHandler.DownloadResume),
+		),
 	)
 
 	server := &http.Server{
-		Addr:    ":3000",
+		Addr:    ":7000",
 		Handler: mux,
 	}
 
-	log.Println("Server running on http://localhost:3000")
+	log.Println("Server running on http://localhost:7000")
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)

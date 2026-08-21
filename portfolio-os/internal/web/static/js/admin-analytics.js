@@ -130,3 +130,5 @@ function formatDuration(duration) {
 }
 
 loadAnalytics();
+
+setInterval(loadAnalytics, 30000);

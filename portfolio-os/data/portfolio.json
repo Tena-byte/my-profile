@@ -1,53 +1,78 @@
 {
-  "profile": {
-    "name": "Your Name",
-    "title": "Software Engineer",
-    "bio": "I build reliable software and modern web applications.",
-    "location": "Nigeria",
-    "profile_image": "",
-    "availability": "Available for opportunities"
-  },
-
-  "statistics": [
-    {
-      "label": "Projects",
-      "value": "10+"
+    "profile": {
+        "name": "Your Name",
+        "title": "Software person",
+        "bio": "I build reliable software and modern web applications.",
+        "location": "Nigeria",
+        "profile_image": "",
+        "availability": "Available for opportunities"
     },
-    {
-      "label": "Technologies",
-      "value": "15+"
+    "statistics": [
+        {
+            "label": "Projects",
+            "value": "10+"
+        },
+        {
+            "label": "Technologies",
+            "value": "15+"
+        },
+        {
+            "label": "Experience",
+            "value": "3+"
+        }
+    ],
+    "skills": [
+        {
+            "name": "Golang",
+            "category": "Backend",
+            "proficiency": 90
+        }
+    ],
+    "services": [],
+    "education": [],
+    "certificates": [
+        {
+            "title": "cyber",
+            "issuer": "cisco",
+            "issue_date": "",
+            "credential_id": "",
+            "description": "",
+            "image": "",
+            "verification_url": ""
+        },
+        {
+            "title": "ethical hacker",
+            "issuer": "cisco",
+            "issue_date": "",
+            "credential_id": "",
+            "description": "",
+            "image": "",
+            "verification_url": ""
+        },
+        {
+            "title": "Etical hacker",
+            "issuer": "cisco",
+            "issue_date": "25-04-2003",
+            "credential_id": "hgkh8989",
+            "description": "mine alone",
+            "image": "/uploads/certificates/b6af58e6c1bc431a50926457a2484430.jpg",
+            "verification_url": "http://localhost:7000"
+        },
+        {
+            "title": "Hacker",
+            "issuer": "cisco",
+            "issue_date": "25-04-2003",
+            "credential_id": "hgkh8989",
+            "description": "rttr",
+            "image": "/uploads/certificates/c0861248e6fbf6003fa48789aae23f32.jpg",
+            "verification_url": ""
+        }
+    ],
+    "projects": [],
+    "contact": {
+        "email": "you@example.com",
+        "phone": "",
+        "location": "Nigeria"
     },
-    {
-      "label": "Experience",
-      "value": "3+"
-    }
-  ],
-
-  "skills": [],
-
-  "services": [],
-
-  "education": [],
-
-  "certificates": [
-    {
-      "title": "Example Certificate",
-      "issuer": "Example Organization",
-      "issue_date": "2026-01-01",
-      "credential_id": "CERT-001",
-      "description": "Example certificate description.",
-      "image": "/static/images/certificates/example.jpg",
-      "verification_url": ""
-    }
-  ],
-
-  "projects": [],
-
-  "contact": {
-    "email": "you@example.com",
-    "phone": "",
-    "location": "Nigeria"
-  },
-
-  "social_links": []
+    "social_links": []
 }

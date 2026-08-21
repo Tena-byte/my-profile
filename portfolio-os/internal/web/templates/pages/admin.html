@@ -1,85 +1,981 @@
 {{ define "admin" }}
 
+<link rel="stylesheet" href="/static/css/admin.css" />
+
 <section class="admin-page">
-    <header class="admin-header">
-        <div>
-            <p class="admin-eyebrow">ADMIN</p>
-            <h1>Analytics</h1>
-            <p>Portfolio traffic and visitor activity.</p>
-        </div>
+  <header class="admin-header">
+    <div>
+      <p class="admin-eyebrow">ADMIN</p>
+      <h1>Analytics</h1>
+      <p>Portfolio traffic and visitor activity.</p>
+    </div>
+
+    <a href="/admin/logout" class="admin-logout">Logout</a>
+  </header>
+
+  <!-- Analytics Statistics -->
+  <section class="analytics-stats">
+    <article class="stat-card">
+      <span>Total Visits</span>
+      <strong id="total-visits">0</strong>
+    </article>
+
+    <article class="stat-card">
+      <span>Unique Visitors</span>
+      <strong id="unique-visitors">0</strong>
+    </article>
+
+    <article class="stat-card">
+      <span>Average Duration</span>
+      <strong id="average-duration">0 sec</strong>
+    </article>
+  </section>
+
+  <!-- Profile Management -->
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Profile</h2>
+      <p>Update the information displayed on your portfolio.</p>
     </header>
 
-    <section class="analytics-stats">
+    <form method="POST" action="/admin/profile">
+      <div class="admin-form-group">
+        <label for="name">Name</label>
 
-        <article class="stat-card">
-            <span>Total Visits</span>
-            <strong id="total-visits">0</strong>
-        </article>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value="{{ .Profile.Name }}"
+          required
+        />
+      </div>
 
-        <article class="stat-card">
-            <span>Unique Visitors</span>
-            <strong id="unique-visitors">0</strong>
-        </article>
+      <div class="admin-form-group">
+        <label for="title">Professional Title</label>
 
-        <article class="stat-card">
-            <span>Average Duration</span>
-            <strong id="average-duration">0 sec</strong>
-        </article>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value="{{ .Profile.Title }}"
+          required
+        />
+      </div>
 
-    </section>
+      <div class="admin-form-group">
+        <label for="bio">Bio</label>
 
-    <section class="analytics-grid">
+        <textarea id="bio" name="bio" rows="6" required>
+{{ .Profile.Bio }}</textarea
+        >
+      </div>
 
-        <article class="analytics-card">
-            <header>
-                <h2>Devices</h2>
-            </header>
+      <div class="admin-form-group">
+        <label for="location">Location</label>
 
-            <div id="device-breakdown">
-                <p>No data yet.</p>
-            </div>
-        </article>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          value="{{ .Profile.Location }}"
+        />
+      </div>
 
-        <article class="analytics-card">
-            <header>
-                <h2>Pages</h2>
-            </header>
+      <div class="admin-form-group">
+        <label for="profile_image">Profile Image</label>
 
-            <div id="page-views">
-                <p>No data yet.</p>
-            </div>
-        </article>
+        <input
+          type="text"
+          id="profile_image"
+          name="profile_image"
+          value="{{ .Profile.ProfileImage }}"
+        />
+      </div>
 
-    </section>
+      <div class="admin-form-group">
+        <label for="availability">Availability</label>
 
-    <section class="analytics-card recent-visits">
+        <input
+          type="text"
+          id="availability"
+          name="availability"
+          value="{{ .Profile.Availability }}"
+        />
+      </div>
 
-        <header>
-            <h2>Recent Visits</h2>
-        </header>
+      <button type="submit">Save Profile</button>
+    </form>
+  </section>
 
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Page</th>
-                        <th>Device</th>
-                        <th>IP</th>
-                        <th>Duration</th>
-                        <th>Time</th>
-                    </tr>
-                </thead>
+  <!-- Skills Management -->
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Skills</h2>
+      <p>Add, update, or remove the skills shown on your portfolio.</p>
+    </header>
 
-                <tbody id="recent-visits">
-                    <tr>
-                        <td colspan="5">No visits yet.</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Add Skill -->
+    <form method="POST" action="/admin/skills">
+      <h3>Add Skill</h3>
+
+      <div class="admin-form-group">
+        <label for="skill-name">Name</label>
+        <input type="text" id="skill-name" name="name" required />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="skill-category">Category</label>
+        <input
+          type="text"
+          id="skill-category"
+          name="category"
+          placeholder="e.g. Backend"
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="skill-proficiency">Proficiency (0–100)</label>
+        <input
+          type="number"
+          id="skill-proficiency"
+          name="proficiency"
+          min="0"
+          max="100"
+          required
+        />
+      </div>
+
+      <button type="submit">Add Skill</button>
+    </form>
+
+    <!-- Existing Skills -->
+    <div class="existing-skills">
+      <h3>Existing Skills</h3>
+
+      {{ range $index, $skill := .Skills }}
+
+      <div class="skill-editor">
+        <form method="POST" action="/admin/skills/{{ $index }}">
+          <h4>Skill {{ $index }}</h4>
+
+          <div class="admin-form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              value="{{ $skill.Name }}"
+              required
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Category</label>
+            <input type="text" name="category" value="{{ $skill.Category }}" />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Proficiency (0–100)</label>
+            <input
+              type="number"
+              name="proficiency"
+              value="{{ $skill.Proficiency }}"
+              min="0"
+              max="100"
+              required
+            />
+          </div>
+
+          <button type="submit">Update Skill</button>
+        </form>
+
+        <form
+          method="POST"
+          action="/admin/skills/{{ $index }}/delete"
+          onsubmit="return confirm('Delete this skill?')"
+        >
+          <button type="submit" class="admin-delete">Delete</button>
+        </form>
+      </div>
+
+      {{ else }}
+
+      <p>No skills added yet.</p>
+
+      {{ end }}
+    </div>
+  </section>
+
+  <!-- Services Management -->
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Services</h2>
+      <p>Add, update, or remove the services shown on your portfolio.</p>
+    </header>
+
+    <!-- Add Service -->
+    <form method="POST" action="/admin/services">
+      <h3>Add Service</h3>
+
+      <div class="admin-form-group">
+        <label for="service-title">Title</label>
+        <input type="text" id="service-title" name="title" required />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="service-description">Description</label>
+        <textarea
+          id="service-description"
+          name="description"
+          rows="5"
+          required
+        ></textarea>
+      </div>
+
+      <div class="admin-form-group">
+        <label for="service-icon">Icon</label>
+        <input
+          type="text"
+          id="service-icon"
+          name="icon"
+          placeholder="e.g. code"
+        />
+      </div>
+
+      <button type="submit">Add Service</button>
+    </form>
+
+    <!-- Existing Services -->
+    <div class="existing-services">
+      <h3>Existing Services</h3>
+
+      {{ range $index, $service := .Services }}
+
+      <div class="service-editor">
+        <form method="POST" action="/admin/services/{{ $index }}">
+          <h4>Service {{ $index }}</h4>
+
+          <div class="admin-form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              name="title"
+              value="{{ $service.Title }}"
+              required
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              rows="5"
+              required
+            >{{ $service.Description }}</textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label>Icon</label>
+            <input
+              type="text"
+              name="icon"
+              value="{{ $service.Icon }}"
+            />
+          </div>
+
+          <button type="submit">Update Service</button>
+        </form>
+
+        <form
+          method="POST"
+          action="/admin/services/{{ $index }}/delete"
+          onsubmit="return confirm('Delete this service?')"
+        >
+          <button type="submit" class="admin-delete">Delete</button>
+        </form>
+      </div>
+
+      {{ else }}
+
+      <p>No services added yet.</p>
+
+      {{ end }}
+    </div>
+  </section>
+
+  <!-- Education Management -->
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Education</h2>
+      <p>Add, update, or remove your education history.</p>
+    </header>
+
+    <!-- Add Education -->
+    <form method="POST" action="/admin/education">
+      <h3>Add Education</h3>
+
+      <div class="admin-form-group">
+        <label for="education-institution">Institution</label>
+        <input
+          type="text"
+          id="education-institution"
+          name="institution"
+          required
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="education-degree">Degree</label>
+        <input type="text" id="education-degree" name="degree" required />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="education-field">Field of Study</label>
+        <input
+          type="text"
+          id="education-field"
+          name="field"
+          placeholder="e.g. Computer Science"
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="education-start-year">Start Year</label>
+        <input
+          type="number"
+          id="education-start-year"
+          name="start_year"
+          min="1950"
+          max="2100"
+          placeholder="e.g. 2021"
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="education-end-year">End Year</label>
+        <input
+          type="number"
+          id="education-end-year"
+          name="end_year"
+          min="1950"
+          max="2100"
+          placeholder="Leave blank if ongoing"
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="education-description">Description</label>
+        <textarea
+          id="education-description"
+          name="description"
+          rows="5"
+        ></textarea>
+      </div>
+
+      <button type="submit">Add Education</button>
+    </form>
+
+    <!-- Existing Education -->
+    <div class="existing-education">
+      <h3>Existing Education</h3>
+
+      {{ range $index, $education := .Education }}
+
+      <div class="education-editor">
+        <form method="POST" action="/admin/education/{{ $index }}">
+          <h4>Education {{ $index }}</h4>
+
+          <div class="admin-form-group">
+            <label>Institution</label>
+            <input
+              type="text"
+              name="institution"
+              value="{{ $education.Institution }}"
+              required
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Degree</label>
+            <input
+              type="text"
+              name="degree"
+              value="{{ $education.Degree }}"
+              required
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Field of Study</label>
+            <input type="text" name="field" value="{{ $education.Field }}" />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Start Year</label>
+            <input
+              type="number"
+              name="start_year"
+              min="1950"
+              max="2100"
+              {{ if $education.StartYear }}value="{{ $education.StartYear }}"{{ end }}
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>End Year</label>
+            <input
+              type="number"
+              name="end_year"
+              min="1950"
+              max="2100"
+              placeholder="Leave blank if ongoing"
+              {{ if $education.EndYear }}value="{{ $education.EndYear }}"{{ end }}
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              rows="5"
+            >{{ $education.Description }}</textarea>
+          </div>
+
+          <button type="submit">Update Education</button>
+        </form>
+
+        <form
+          method="POST"
+          action="/admin/education/{{ $index }}/delete"
+          onsubmit="return confirm('Delete this education entry?')"
+        >
+          <button type="submit" class="admin-delete">Delete</button>
+        </form>
+      </div>
+
+      {{ else }}
+
+      <p>No education entries added yet.</p>
+
+      {{ end }}
+    </div>
+  </section>
+
+  <!-- Projects Management -->
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Projects</h2>
+      <p>Add, update, or remove the projects shown on your portfolio.</p>
+    </header>
+
+    <!-- Add Project -->
+    <form method="POST" action="/admin/projects">
+      <h3>Add Project</h3>
+
+      <div class="admin-form-group">
+        <label for="project-name">Name</label>
+        <input type="text" id="project-name" name="name" required />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="project-description">Description</label>
+        <textarea
+          id="project-description"
+          name="description"
+          rows="5"
+          required
+        ></textarea>
+      </div>
+
+      <div class="admin-form-group">
+        <label for="project-image">Image URL</label>
+        <input type="url" id="project-image" name="image" />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="project-url">Project URL</label>
+        <input type="url" id="project-url" name="url" />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="project-github">GitHub URL</label>
+        <input type="url" id="project-github" name="github" />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="project-technologies">Technologies</label>
+        <input
+          type="text"
+          id="project-technologies"
+          name="technologies"
+          placeholder="Comma-separated, e.g. Go, Gin, MySQL, React"
+        />
+      </div>
+
+      <button type="submit">Add Project</button>
+    </form>
+
+    <!-- Existing Projects -->
+    <div class="existing-projects">
+      <h3>Existing Projects</h3>
+
+      {{ range $index, $project := .Projects }}
+
+      <div class="project-editor">
+        <form method="POST" action="/admin/projects/{{ $index }}">
+          <h4>Project {{ $index }}</h4>
+
+          <div class="admin-form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              value="{{ $project.Name }}"
+              required
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              rows="5"
+              required
+            >{{ $project.Description }}</textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label>Image URL</label>
+            <input
+              type="url"
+              name="image"
+              value="{{ $project.Image }}"
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Project URL</label>
+            <input
+              type="url"
+              name="url"
+              value="{{ $project.URL }}"
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>GitHub URL</label>
+            <input
+              type="url"
+              name="github"
+              value="{{ $project.GitHub }}"
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Technologies</label>
+            <input
+              type="text"
+              name="technologies"
+              value="{{ range $i, $technology := $project.Technologies }}{{ if $i }}, {{ end }}{{ $technology }}{{ end }}"
+            />
+          </div>
+
+          <button type="submit">Update Project</button>
+        </form>
+
+        <form
+          method="POST"
+          action="/admin/projects/{{ $index }}/delete"
+          onsubmit="return confirm('Delete this project?')"
+        >
+          <button type="submit" class="admin-delete">Delete</button>
+        </form>
+      </div>
+
+      {{ else }}
+
+      <p>No projects added yet.</p>
+
+      {{ end }}
+    </div>
+  </section>
+
+  <!-- Certificates Management -->
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Certificates</h2>
+      <p>Add or update professional certificates.</p>
+    </header>
+
+    <!-- Add Certificate -->
+    <form
+      method="POST"
+      action="/admin/certificates"
+      enctype="multipart/form-data"
+    >
+      <h3>Add Certificate</h3>
+
+      <div class="admin-form-group">
+        <label for="certificate-title">Title</label>
+
+
+        <input
+          type="text"
+          id="certificate-title"
+          name="title"
+          required
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label>Certificate Image</label>
+
+        <input
+          type="file"
+          name="image"
+          accept="image/jpeg,image/png,image/webp"
+        />
+
+        
+      </div>
+
+      <div class="admin-form-group">
+        <label for="certificate-issuer">Issuer</label>
+        <input type="text" id="certificate-issuer" name="issuer" required />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="certificate-date">Issue Date</label>
+        <input
+          type="text"
+          id="certificate-date"
+          name="issue_date"
+          placeholder="August 2026"
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="certificate-id">Credential ID</label>
+        <input type="text" id="certificate-id" name="credential_id" />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="certificate-description">Description</label>
+        <textarea
+          id="certificate-description"
+          name="description"
+          rows="5"
+        ></textarea>
+      </div>
+
+      <div class="admin-form-group">
+        <label for="certificate-url">Verification URL</label>
+        <input
+          type="url"
+          id="certificate-url"
+          name="verification_url"
+          placeholder="https://..."
+        />
+      </div>
+
+      <button type="submit">Add Certificate</button>
+    </form>
+
+    <!-- Existing Certificates -->
+    <!-- Existing Certificates -->
+    <div class="existing-certificates">
+      <h3>Existing Certificates</h3>
+
+      {{ range $index, $certificate := .Certificates }}
+
+      <form
+        method="POST"
+        action="/admin/certificates/{{ $index }}"
+        enctype="multipart/form-data"
+        class="certificate-editor"
+      >
+        <h4>Certificate {{ $index }}</h4>
+
+        <div class="admin-form-group">
+          <label>Title</label>
+          <input
+            type="text"
+            name="title"
+            value="{{ $certificate.Title }}"
+            required
+          />
         </div>
 
-    </section>
+        <div class="admin-form-group">
+          <label>Issuer</label>
+          <input
+            type="text"
+            name="issuer"
+            value="{{ $certificate.Issuer }}"
+            required
+          />
+        </div>
 
+        <div class="admin-form-group">
+          <label>Issue Date</label>
+          <input
+            type="text"
+            name="issue_date"
+            value="{{ $certificate.IssueDate }}"
+          />
+        </div>
+
+        <div class="admin-form-group">
+          <label>Credential ID</label>
+          <input
+            type="text"
+            name="credential_id"
+            value="{{ $certificate.CredentialID }}"
+          />
+        </div>
+
+        <div class="admin-form-group">
+          <label>Description</label>
+          <textarea name="description" rows="5">
+{{ $certificate.Description }}</textarea
+          >
+        </div>
+
+        <div class="admin-form-group">
+          <label>Certificate Image</label>
+
+          <input
+            type="file"
+            name="image"
+            accept="image/jpeg,image/png,image/webp"
+          />
+
+          {{ if $certificate.Image }}
+          <p>
+            Current image:
+            <a href="{{ $certificate.Image }}" target="_blank"> View </a>
+          </p>
+          {{ end }}
+        </div>
+
+        <div class="admin-form-group">
+          <label>Verification URL</label>
+          <input
+            type="url"
+            name="verification_url"
+            value="{{ $certificate.VerificationURL }}"
+          />
+        </div>
+
+        <button type="submit">Update Certificate</button>
+      </form>
+
+      <form
+        method="POST"
+        action="/admin/certificates/{{ $index }}/delete"
+        onsubmit="return confirm('Delete this certificate?')"
+        class="certificate-delete"
+      >
+        <button type="submit" class="admin-delete">Delete Certificate</button>
+      </form>
+
+      {{ else }}
+
+      <p>No certificates added yet.</p>
+
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Contact</h2>
+      <p>Update the contact details shown on your portfolio.</p>
+    </header>
+
+    <form method="POST" action="/admin/contact">
+      <div class="admin-form-group">
+        <label for="contact_email">Email</label>
+
+        <input
+          type="email"
+          id="contact_email"
+          name="email"
+          value="{{ .Contact.Email }}"
+          required
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="contact_phone">Phone</label>
+
+        <input
+          type="tel"
+          id="contact_phone"
+          name="phone"
+          value="{{ .Contact.Phone }}"
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="contact_location">Location</label>
+
+        <input
+          type="text"
+          id="contact_location"
+          name="location"
+          value="{{ .Contact.Location }}"
+        />
+      </div>
+
+      <button type="submit">Save Contact</button>
+    </form>
+  </section>
+
+  <section class="analytics-card admin-section">
+    <header>
+      <h2>Social Links</h2>
+      <p>Add, update, or remove the social links shown on your portfolio.</p>
+    </header>
+
+    <!-- Add Social Link -->
+    <form method="POST" action="/admin/social-links">
+      <h3>Add Social Link</h3>
+
+      <div class="admin-form-group">
+        <label for="social-platform">Platform</label>
+        <input
+          type="text"
+          id="social-platform"
+          name="platform"
+          placeholder="e.g. GitHub"
+          required
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="social-url">URL</label>
+        <input
+          type="url"
+          id="social-url"
+          name="url"
+          placeholder="https://github.com/username"
+          required
+        />
+      </div>
+
+      <div class="admin-form-group">
+        <label for="social-username">Username</label>
+        <input
+          type="text"
+          id="social-username"
+          name="username"
+          placeholder="e.g. @username"
+        />
+      </div>
+
+      <button type="submit">Add Social Link</button>
+    </form>
+
+    <!-- Existing Social Links -->
+    <div class="existing-social-links">
+      <h3>Existing Social Links</h3>
+
+      {{ range $index, $link := .SocialLinks }}
+
+      <div class="social-link-editor">
+        <form method="POST" action="/admin/social-links/{{ $index }}">
+          <h4>Social Link {{ $index }}</h4>
+
+          <div class="admin-form-group">
+            <label>Platform</label>
+            <input
+              type="text"
+              name="platform"
+              value="{{ $link.Platform }}"
+              required
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label>URL</label>
+            <input type="url" name="url" value="{{ $link.URL }}" required />
+          </div>
+
+          <div class="admin-form-group">
+            <label>Username</label>
+            <input type="text" name="username" value="{{ $link.Username }}" />
+          </div>
+
+          <button type="submit">Update Social Link</button>
+        </form>
+
+        <form
+          method="POST"
+          action="/admin/social-links/{{ $index }}/delete"
+          onsubmit="return confirm('Delete this social link?')"
+        >
+          <button type="submit" class="admin-delete">Delete</button>
+        </form>
+      </div>
+
+      {{ else }}
+
+      <p>No social links added yet.</p>
+
+      {{ end }}
+    </div>
+  </section>
+
+  <!-- Device and Page Analytics -->
+  <section class="analytics-grid">
+    <article class="analytics-card">
+      <header>
+        <h2>Devices</h2>
+      </header>
+
+      <div id="device-breakdown">
+        <p>No data yet.</p>
+      </div>
+    </article>
+
+    <article class="analytics-card">
+      <header>
+        <h2>Pages</h2>
+      </header>
+
+      <div id="page-views">
+        <p>No data yet.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- Recent Visits -->
+  <section class="analytics-card recent-visits">
+    <header>
+      <h2>Recent Visits</h2>
+    </header>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Device</th>
+            <th>IP</th>
+            <th>Duration</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+
+        <tbody id="recent-visits">
+          <tr>
+            <td colspan="5">No visits yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </section>
 
 <script src="/static/js/admin-analytics.js"></script>
